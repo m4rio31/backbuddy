@@ -1,0 +1,9 @@
+services:
+  daemon:
+    image: backbuddy-daemon:latest
+    build:
+      context: .
+      dockerfile: daemon/Dockerfile
+    container_name: backbuddy-daemon
+    
+    restart: on-failure
