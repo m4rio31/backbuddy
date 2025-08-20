@@ -1,2 +1,2 @@
 # crontab
-* * * * * /script.sh
+* * * * * /usr/local/bin/daemon 
