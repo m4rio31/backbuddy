@@ -6,4 +6,7 @@ services:
       dockerfile: daemon/Dockerfile
     container_name: backbuddy-daemon
     
+    volumes:
+      - /home/mario/code/qrcode-generator:/mnt/qrcode-generator:ro
+
     restart: on-failure

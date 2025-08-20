@@ -8,20 +8,13 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o daemon ./daemon
 
 
-# Stage 2: Setup final image
-FROM alpine:3.17
+# Stage 2: Setup image for cronjob
+FROM alpine:3.22 AS runner
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+COPY --from=builder /go/src/go.code.github.com/daemon /usr/local/bin/
 
-RUN apk add --no-cache cronie
+COPY ./daemon/cron/crontab.txt /crontab.txt
 
-COPY --from=builder --chown=appuser:appgroup /go/src/go.code.github.com/daemon /usr/local/bin/
+RUN /usr/bin/crontab /crontab.txt
 
-COPY --chown=appuser:appgroup daemon/cron/entry.sh /usr/local/bin/entry.sh
-RUN chmod +x /usr/local/bin/entry.sh
-
-COPY --chown=appuser:appgroup daemon/cron/crontab.txt /etc/crontabs/appuser
-
-USER appuser
-
-CMD ["/usr/local/bin/entry.sh"]
+CMD ["/usr/sbin/crond", "-f"]
