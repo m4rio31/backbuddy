@@ -1,10 +1,10 @@
 services:
   daemon:
-    image: backbuddy-daemon:latest
+    image: backbuddy-cron:latest
     build:
       context: .
-      dockerfile: daemon/Dockerfile
-    container_name: backbuddy-daemon
+      dockerfile: cron/Dockerfile
+    container_name: backbuddy-cron
     
     volumes:
       - /home/mario/code/qrcode-generator:/mnt/qrcode-generator:ro

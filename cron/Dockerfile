@@ -5,13 +5,13 @@ WORKDIR /go/src/go.code.github.com
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o daemon ./daemon
+RUN CGO_ENABLED=0 GOOS=linux go build -o cron ./cron
 
 
 # Stage 2: Setup image for cronjob
 FROM alpine:3.22 AS runner
 
-COPY --from=builder /go/src/go.code.github.com/daemon /usr/local/bin/
+COPY --from=builder /go/src/go.code.github.com/cron /usr/local/bin/
 
 COPY ./daemon/cron/crontab.txt /crontab.txt
 
